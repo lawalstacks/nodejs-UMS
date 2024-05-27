@@ -29,6 +29,10 @@ app.get('/', (req,res) => {
   res.render('index',locals);
 })
 
+app.get('*', (req,res) =>{
+  res.status(404).render('404'); 
+})
+ 
 app.listen(port, ()=>{
   console.log(`App running on port ${port}`);
 }); 
