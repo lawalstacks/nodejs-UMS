@@ -1,19 +1,20 @@
 const Customer = require('../models/Customer');
-
 const mongoose = require('mongoose');
+
+
 
 /*
 * GET /
 /*customer routes*/
 
 exports.homepage = async (req,res) =>  {
-
+  const messages = await req.flash("info");
 
     const locals = {
       title: 'Free UMS',
       description: 'Free nodejs management system'
     }
-    res.render('index',locals);
+    res.render('index',{locals,messages});
 
 }
 
@@ -45,11 +46,13 @@ exports.postCustomer = async (req,res) =>  {
     lastName: req.body.lastName,
     details: req.body.details,
     tel: req.body.telephone,
-    email: req.body.email
-  })
+    email: req.body.email,
+    details: req.body.details
+  });
   
   try{
     await Customer.create(newCustomer);
+    await req.flash('info', 'new customer added');
     res.redirect('/');
   }catch(err){
     console.log(err); 
