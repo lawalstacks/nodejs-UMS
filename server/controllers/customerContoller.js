@@ -1,9 +1,8 @@
 const Customer = require('../models/Customer');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 
 
-/*
-* GET /
+/* GET
 /*customer routes*/
 
 exports.homepage = async (req,res) =>  {
@@ -13,15 +12,46 @@ exports.homepage = async (req,res) =>  {
       description: 'Free nodejs management system'
     }
 
+    const perPage = 12;
+    let page = req.query.page || 1;
     
+    try{
+      const customers = await Customer.aggregate([{$sort: {updatedAt: -1}}])
+          .skip(perPage * page - perPage)
+          .limit(perPage)
+          .exec();
+      const count = await Customer.countDocuments();
+      res.render('index',{
+        locals,
+        customers,
+        current: page,
+        pages: Math.ceil(count/perPage),
+        messages
+
+      });
+    }catch(err){
+      console.log("Unable to connect");
+    }
+    
+}
+/*
+exports.homepage = async (req,res) =>  {
+  const messages = await req.flash("info");
+    const locals = {
+      title: 'Free UMS',
+      description: 'Free nodejs management system'
+    }
+
+
     try{
       const customers = await Customer.find({}).limit(10);
       res.render('index',{locals,messages,customers});
     }catch(err){
       console.log("Unable to connect");
     }
-    
+
 }
+ */
 
 /**
  * add customer
@@ -50,9 +80,8 @@ exports.postCustomer = async (req,res) =>  {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     details: req.body.details,
-    tel: req.body.telephone,
-    email: req.body.email,
-    details: req.body.details
+    telephone: req.body.telephone,
+    email: req.body.email
   });
   
   try{
