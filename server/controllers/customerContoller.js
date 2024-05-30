@@ -2,20 +2,25 @@ const Customer = require('../models/Customer');
 const mongoose = require('mongoose');
 
 
-
 /*
 * GET /
 /*customer routes*/
 
 exports.homepage = async (req,res) =>  {
   const messages = await req.flash("info");
-
     const locals = {
       title: 'Free UMS',
       description: 'Free nodejs management system'
     }
-    res.render('index',{locals,messages});
 
+    
+    try{
+      const customers = await Customer.find({}).limit(10);
+      res.render('index',{locals,messages,customers});
+    }catch(err){
+      console.log("Unable to connect");
+    }
+    
 }
 
 /**

@@ -1,5 +1,6 @@
 body {
   font-size: .875rem;
+  font-family: Arial;
 }
 
 .feather {
@@ -75,6 +76,7 @@ body {
   top: .25rem;
   right: 1rem;
 }
+
 
 .navbar .form-control {
   padding: .75rem 1rem;
