@@ -27,8 +27,8 @@
         <th scope="col" class="text-end">Action</th>
       </tr>
     </thead>
-
     <tbody>
+
       <% customers.forEach(element => { %>
         <tr class="align-middle">
           <td><%= element.firstName %></td>
@@ -69,6 +69,22 @@
       <li class="page-item disabled"><a href="#" class="page-link">First</a> </li>
       <%}else{%>
       <li class="page-item"><a href="/?page=1" class="page-link">First</a> </li>
+    <%}%>
+    <% let i = (Number(current) > 5 ? Number(current) - 4 : 1)%>
+    <% if(i !== 1){%>
+      <li class="page-item disabled"><a href="#" class="page-link">....</a></li>
+    <%}%>
+    <%for(; i <= (Number(current) + 4) && i <= pages;i++) {%>
+    <% if(i === current){%>
+        <li class="page-item disabled"><a href="#" class="page-link"> <%=i%></a></li>
+    <%} else {%>
+        <li class="page-link "><a href="/?page=<%=i%>" class="page-link"><%=i%></a></li>
+    <%}%>
+    <%}%>
+    <% if(current === pages){%>
+      <li class="page-link disabled"><a href="#" class="page-link">last</a></li>
+    <%}else{%>
+        <li class="page-link "><a href="/page?=<%=pages%>" class="page-link">last</a></li>
     <%}%>
   </ul>
 </nav>
